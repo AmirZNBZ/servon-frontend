@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand */
+  --color-primary: 270 80% 60%;
+
+  /* Base */
+  --color-bg: 0 0% 100%;
+  --color-fg: 240 10% 10%;
+
+  /* UI */
+  --color-border: 240 5% 90%;
+}
+
+[data-theme="dark"] {
+  --color-bg: 240 10% 10%;
+  --color-fg: 0 0% 98%;
+  --color-border: 240 5% 25%;
+}
+
+@theme {
+  --color-background: hsl(var(--color-bg));
+  --color-foreground: hsl(var(--color-fg));
+  --color-primary: hsl(var(--color-primary));
+  --color-border: hsl(var(--color-border));
+}
