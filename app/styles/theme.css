@@ -18,7 +18,7 @@
   --color-border: 240 5% 25%;
 }
 
-@theme {
+@theme static {
   --color-background: hsl(var(--color-bg));
   --color-foreground: hsl(var(--color-fg));
   --color-primary: hsl(var(--color-primary));

@@ -1,3 +1,15 @@
+import { Button } from "./components/atoms/Button";
+
 export default function Home() {
-  return <div className="bg-red-500 text-white p-8">Tailwind Works</div>;
+  return (
+    <div className="p-8">
+      <Button>Click Me</Button>
+      <Button variant="primary" size="sm">
+        Click Me
+      </Button>
+      <Button variant="outline" size="lg">
+        Click Me
+      </Button>
+    </div>
+  );
 }
