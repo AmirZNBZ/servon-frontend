@@ -1,4 +1,4 @@
-import ThemeToggle from "./components/atoms/ThemeToggle";
+import ThemeToggle from "../src/components/atoms/ThemeToggle";
 
 export default function Home() {
   return (
