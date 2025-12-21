@@ -14,6 +14,30 @@ vi.mock("../api/auth.api", () => ({
 }));
 
 describe("AuthContext", () => {
+  const wrapper = ({ children }: { children: React.ReactNode }) => <AuthProvider>{children}</AuthProvider>;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    (authApi.me as any).mockResolvedValue({ data: null });
+  });
+
+  it("register user correctly", async () => {
+    (authApi.register as any).mockResolvedValue({
+      data: { message: "User Registered" },
+    });
+    const { result } = renderHook(() => useAuth(), {
+      wrapper,
+    });
+
+    let response;
+    await act(async () => {
+      response = await result.current.register("amir@amir.com", "asdf@1234");
+    });
+
+    expect(response).toBe("User Registered");
+    expect(authApi.register).toHaveBeenCalledWith({ email: "amir@amir.com", password: "asdf@1234" });
+  });
+
   it("bootstraps user on mount", async () => {
     (authApi.me as any).mockResolvedValue({
       data: { userId: "test@test.com" },
@@ -35,11 +59,9 @@ describe("AuthContext", () => {
       data: { accessToken: "token" },
     });
 
-    (authApi.me() as any).mockResolvedValue({
+    (authApi.me as any).mockResolvedValue({
       data: { userId: "amir@amir.com" },
     });
-
-    const wrapper = ({ children }: any) => <AuthProvider>{children}</AuthProvider>;
 
     const { result } = renderHook(() => useAuth(), {
       wrapper,
@@ -55,8 +77,6 @@ describe("AuthContext", () => {
 
   it("logs out user correctly", async () => {
     (authApi.logout as any).mockResolvedValue({});
-
-    const wrapper = ({ children }: any) => <AuthProvider>{children}</AuthProvider>;
 
     const { result } = renderHook(() => useAuth(), {
       wrapper,

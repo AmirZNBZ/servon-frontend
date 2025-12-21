@@ -8,6 +8,9 @@ export interface LoginPayload {
 export interface LoginResponse {
   accessToken: string;
 }
+export interface RegisterResponse {
+  message: string;
+}
 
 export interface MeResponse {
   userId: string;
@@ -19,7 +22,7 @@ export const authApi = {
   },
 
   register(payload: LoginPayload) {
-    return http.post<LoginResponse>("/auth/register", payload);
+    return http.post<RegisterResponse>("/auth/register", payload);
   },
 
   me() {

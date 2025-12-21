@@ -2,7 +2,7 @@ import { http } from "@/src/lib/http";
 import { describe, expect, it, vi } from "vitest";
 import { authApi } from "./auth.api";
 
-vi.mock("@/lib/http", () => ({
+vi.mock("@/src/lib/http", () => ({
   http: {
     post: vi.fn(),
     get: vi.fn(),
@@ -11,7 +11,7 @@ vi.mock("@/lib/http", () => ({
 
 describe("authApi", () => {
   it("calls login api correctly", async () => {
-    (http.post as any).mockResolveValue({
+    (http.post as any).mockResolvedValue({
       data: { accessToken: "token" },
     });
 
@@ -29,7 +29,7 @@ describe("authApi", () => {
   });
 
   it("calls me API correctly", async () => {
-    (http.get as any).mockResolveValue({
+    (http.get as any).mockResolvedValue({
       data: { userId: "amir@amir.com" },
     });
 
