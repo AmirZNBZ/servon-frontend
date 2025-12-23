@@ -46,8 +46,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const register = useCallback(async (email: string, password: string) => {
     const res = await authApi.register({ email, password });
-    return res.data.message;
     console.log("res", res);
+    return res.data.message;
   }, []);
 
   const logout = useCallback(async () => {
