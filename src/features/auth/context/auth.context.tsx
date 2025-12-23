@@ -3,12 +3,13 @@
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { authApi } from "../api/auth.api";
 import { tokenStore } from "../token";
+import { User } from "../types";
 
 interface AuthContextValue {
+  user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   logout: () => Promise<void>;
-  user: { userId: string } | null;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string) => Promise<string>;
 }
@@ -16,7 +17,7 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<{ userId: string } | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 

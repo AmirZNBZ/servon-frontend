@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "../components/atoms/Button";
 import ThemeToggle from "../components/atoms/ThemeToggle";
 import { useAuth } from "../features/auth/hooks/useAuth";
 
@@ -10,10 +11,10 @@ export default function Home() {
 
   if (!isAuthenticated) {
     return (
-      <div className="flex gap-4 flex-col">
+      <div className="flex gap-4">
         <h1>not logged in</h1>
-        <button onClick={() => login("amir@example.com", "asdfasdf")}>Login</button>
-        <button onClick={() => register("amir@example.com", "asdfasdf")}>Register</button>
+        <Button onClick={() => login("amir@example.com", "asdfasdf")}>Login</Button>
+        <Button onClick={() => register("amir@example.com", "asdfasdf")}>Register</Button>
       </div>
     );
   }

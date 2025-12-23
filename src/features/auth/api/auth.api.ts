@@ -1,4 +1,5 @@
 import { http } from "@/src/lib/http";
+import { User } from "../types";
 
 export interface LoginPayload {
   email: string;
@@ -12,9 +13,7 @@ export interface RegisterResponse {
   message: string;
 }
 
-export interface MeResponse {
-  userId: string;
-}
+export interface MeResponse extends User {}
 
 export const authApi = {
   login(payload: LoginPayload) {
