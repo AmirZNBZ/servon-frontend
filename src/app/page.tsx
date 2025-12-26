@@ -13,8 +13,10 @@ export default function Home() {
     return (
       <div className="flex gap-4">
         <h1>not logged in</h1>
-        <Button onClick={() => login("amir@example.com", "asdfasdf")}>Login</Button>
-        <Button onClick={() => register("amir@example.com", "asdfasdf")}>Register</Button>
+        <Button onClick={() => login("admin@example.com", "asdfasdf")}>Login as Admin</Button>
+        <Button onClick={() => login("amir@example.com", "asdfasdf")}>Login as User</Button>
+        <Button onClick={() => register("admin@example.com", "asdfasdf")}>Register as Admin</Button>
+        <Button onClick={() => register("amir@example.com", "asdfasdf")}>Register as User</Button>
       </div>
     );
   }
@@ -22,7 +24,7 @@ export default function Home() {
   return (
     <>
       <div className="p-8">
-        <h1>Welcome {user?.userId}</h1>
+        <h1>Welcome {user?.email}</h1>
         <button onClick={() => logout()}>Logout</button>
       </div>
       <ThemeToggle />

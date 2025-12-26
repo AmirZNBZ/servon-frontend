@@ -5,5 +5,5 @@ export const usePermission = (permission: string) => {
 
   if (!user) return false;
 
-  return user.permission.includes(permission);
+  return user.permissions.includes(permission);
 };

@@ -6,7 +6,7 @@ export const serviceApi = {
     return http.get<Service[]>("/services");
   },
 
-  create(payload: Omit<Service, "id">) {
+  create(payload: Omit<Service, "id" | "status">) {
     return http.post<Service>("/services", payload);
   },
 
