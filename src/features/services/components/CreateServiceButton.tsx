@@ -13,7 +13,7 @@ const CreateServiceButton = ({ onCreated }: CreateServiceButtonProps) => {
     setLoading(true);
     await serviceApi.create({
       title: "New Service",
-      description: "descritpion",
+      description: "description",
       price: 100000,
     });
     setLoading(false)

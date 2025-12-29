@@ -6,7 +6,7 @@ import ServiceList from "@/src/features/services/components/ServiceList";
 import { useServices } from "@/src/features/services/hooks/useServices";
 
 const ServicesPage = () => {
-  const { error, loading, services, refetch } = useServices();
+  const { error, loading, services, refetch, createService, deleteService } = useServices();
 
   const canCreate = usePermission("CREATE_SERVICE");
 
@@ -15,8 +15,22 @@ const ServicesPage = () => {
 
   return (
     <div className="space-y-4">
-      {canCreate && <CreateServiceButton onCreated={refetch} />}
-      <ServiceList services={services} />
+      {canCreate && (
+        <button
+          onClick={() =>
+            createService({
+              title: "Optimistic Service",
+              description: "Instant UI",
+              price: 1000,
+            })
+          }
+          className="rounded bg-primary px-4 py-2 text-white"
+        >
+          Create Service
+        </button>
+      )}
+
+      <ServiceList services={services} onDelete={deleteService} />
     </div>
   );
 };

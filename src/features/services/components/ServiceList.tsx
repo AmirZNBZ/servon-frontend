@@ -1,16 +1,18 @@
 import { Service } from "../types";
 import ServiceCard from "./ServiceCard";
+import { ServiceItem } from "./ServiceItem";
 
 type ServiceListProps = {
   services: Service[];
+  onDelete: (id: string) => Promise<void>;
 };
 
-const ServiceList = ({ services }: ServiceListProps) => {
+const ServiceList = ({ services,onDelete }: ServiceListProps) => {
   if (services.length === 0) return <div>No services available</div>;
   return (
-    <div className="grid grid-cols-3">
+     <div className="grid grid-cols-3">
       {services.map((service) => (
-        <ServiceCard service={service} key={service.id} />
+        <ServiceItem key={service.id} service={service} onDelete={onDelete} />
       ))}
     </div>
   );

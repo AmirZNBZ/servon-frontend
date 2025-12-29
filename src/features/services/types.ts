@@ -6,4 +6,6 @@ export interface Service {
   description: string;
   price: number;
   status: ServiceStatus;
+  optimistic?: boolean;
+  error?: string;
 }
