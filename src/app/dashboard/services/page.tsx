@@ -1,37 +1,13 @@
 "use client";
 
-import { usePermission } from "@/src/features/auth/hooks/usePermission";
-import CreateServiceButton from "@/src/features/services/components/CreateServiceButton";
-import ServiceList from "@/src/features/services/components/ServiceList";
-import { useServices } from "@/src/features/services/hooks/useServices";
+import ErrorBoundary from "@/src/components/error/ErrorBoundary";
+import ServiceContent from "@/src/features/services/components/ServiceContent";
 
 const ServicesPage = () => {
-  const { error, loading, services, refetch, createService, deleteService } = useServices();
-
-  const canCreate = usePermission("CREATE_SERVICE");
-
-  if (loading) return <div>Loading services....</div>;
-  if (error) return <div>{error}</div>;
-
   return (
-    <div className="space-y-4">
-      {canCreate && (
-        <button
-          onClick={() =>
-            createService({
-              title: "Optimistic Service",
-              description: "Instant UI",
-              price: 1000,
-            })
-          }
-          className="rounded bg-primary px-4 py-2 text-white"
-        >
-          Create Service
-        </button>
-      )}
-
-      <ServiceList services={services} onDelete={deleteService} />
-    </div>
+    <ErrorBoundary fallback={<div className="h-52 font-bold">در گرفتن دیتا مشکلی یش امده لطفا مجددا تلاش کنید</div>}>
+      <ServiceContent />
+    </ErrorBoundary>
   );
 };
 
