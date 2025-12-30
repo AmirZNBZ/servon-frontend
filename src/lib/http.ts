@@ -18,9 +18,25 @@ http.interceptors.request.use((config) => {
 
 let isRefreshing = false;
 
-let queue: Array<(token: string) => void> = [];
+let failedQueue: {
+  resolve: (token: string) => void;
+  reject: (error: unknown) => void;
+}[] = [];
+
+const processQueue = (error: unknown, token: string | null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else if (token) {
+      prom.resolve(token);
+    }
+  });
+
+  failedQueue = [];
+};
+
 http.interceptors.response.use(
-  (res) => res,
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
@@ -28,10 +44,13 @@ http.interceptors.response.use(
       originalRequest._retry = true;
 
       if (isRefreshing) {
-        return new Promise((resolve) => {
-          queue.push((token) => {
-            originalRequest.headers.Authorization = `Bearer ${token}`;
-            resolve(http(originalRequest));
+        return new Promise((resolve, reject) => {
+          failedQueue.push({
+            resolve: (token: string) => {
+              originalRequest.headers.Authorization = `Bearer ${token}`;
+              resolve(http(originalRequest));
+            },
+            reject,
           });
         });
       }
@@ -40,21 +59,21 @@ http.interceptors.response.use(
 
       try {
         const res = await http.post("/auth/refresh");
-        const newToken = res.data.accessToken;
 
-        tokenStore.set(newToken);
-        isRefreshing = false;
+        const newAccessToken = res.data.accessToken;
+        tokenStore.set(newAccessToken);
 
-        queue.forEach((cb) => cb(newToken));
-        queue = [];
+        processQueue(null, newAccessToken);
 
-        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return http(originalRequest);
       } catch (err) {
+        processQueue(err, null);
         tokenStore.clear();
-        isRefreshing = false;
-        queue = [];
+        window.location.href = "/login";
         return Promise.reject(err);
+      } finally {
+        isRefreshing = false;
       }
     }
 

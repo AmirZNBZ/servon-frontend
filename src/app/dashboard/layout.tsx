@@ -1,4 +1,4 @@
-import ProtectedRoute from "@/src/features/auth/components/ProtectedRoute";
+import ProtectedRoute from "@/src/components/guards/ProtectedRoute";
 import { ReactNode } from "react";
 
 interface DashboardLayoutProps {

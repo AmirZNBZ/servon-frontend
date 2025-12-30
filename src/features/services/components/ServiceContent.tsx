@@ -1,9 +1,10 @@
+import { PageState } from "@/src/components/ui-states/PageState";
 import { usePermission } from "../../auth/hooks/usePermission";
 import { useServices } from "../hooks/useServices";
 import ServiceList from "./ServiceList";
 
 const ServiceContent = () => {
-  const { error, loading, services, createService, deleteService } = useServices();
+  const { error, loading, services, createService, deleteService, refetch } = useServices();
 
   const canCreate = usePermission("CREATE_SERVICE");
 
@@ -11,10 +12,10 @@ const ServiceContent = () => {
   if (error) return <div>{error}</div>;
 
   // 🔥 تست boundary
-  if (services.length > 2) throw new Error("Boom");
+  // if (services.length > 2) throw new Error("Boom");
 
   return (
-    <div className="space-y-4">
+    <>
       {canCreate && (
         <button
           onClick={() =>
@@ -29,9 +30,12 @@ const ServiceContent = () => {
           Create Service
         </button>
       )}
-
-      <ServiceList services={services} onDelete={deleteService} />
-    </div>
+      <PageState isEmpty={services.length === 0} isLoading={loading} error={error} onRetry={refetch}>
+        <div className="space-y-4">
+          <ServiceList services={services} onDelete={deleteService} />
+        </div>
+      </PageState>
+    </>
   );
 };
 

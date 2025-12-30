@@ -36,7 +36,7 @@ export const useServices = () => {
     } catch (error) {
       setServices((prev) =>
         prev.map((service) =>
-          service.id === tempId ? { ...service, optimisticService: false, error: "create failed" } : service
+          service.id === tempId ? { ...service, optimistic: false, error: "create failed" } : service
         )
       );
     }

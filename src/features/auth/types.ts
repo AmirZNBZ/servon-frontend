@@ -7,3 +7,5 @@ export interface User {
   role: UserRole;
   permissions: string[];
 }
+
+export type AuthStatus = "loading" | "authenticated" | "unauthenticated";

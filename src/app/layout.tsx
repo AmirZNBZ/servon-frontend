@@ -2,6 +2,7 @@ import React from "react";
 import "./globals.css";
 import { cookies } from "next/headers";
 import { AuthProvider } from "../features/auth/context/auth.context";
+import ErrorBoundary from "../components/error/ErrorBoundary";
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const cookiesStore = await cookies();
@@ -10,7 +11,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="fa" data-theme={theme}>
       <body className="bg-background text-foreground">
-        <AuthProvider>{children}</AuthProvider>
+        <ErrorBoundary>
+          <AuthProvider>{children}</AuthProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

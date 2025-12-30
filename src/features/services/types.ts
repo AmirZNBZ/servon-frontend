@@ -9,3 +9,5 @@ export interface Service {
   optimistic?: boolean;
   error?: string;
 }
+
+export type MutationStatus = "idle" | "loading" | "success" | "error";
