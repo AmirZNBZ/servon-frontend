@@ -40,9 +40,16 @@ http.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+    const is401 = error.response?.status === 401;
+    const isRefreshingRequest = originalRequest.url?.includes("/auth/refresh");
 
+    if (is401 && isRefreshingRequest) {
+      tokenStore.clear();
+      return Promise.reject(error);
+    }
+
+    if (is401 && !originalRequest._retry) {
+      originalRequest._retry = true;
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({
@@ -56,22 +63,19 @@ http.interceptors.response.use(
       }
 
       isRefreshing = true;
-
       try {
         const res = await http.post("/auth/refresh");
+        const newToken = res.data.accessToken;
 
-        const newAccessToken = res.data.accessToken;
-        tokenStore.set(newAccessToken);
+        tokenStore.set(newToken);
+        processQueue(null, newToken);
 
-        processQueue(null, newAccessToken);
-
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return http(originalRequest);
-      } catch (err) {
-        processQueue(err, null);
+      } catch (error) {
+        processQueue(error, null);
         tokenStore.clear();
-        window.location.href = "/login";
-        return Promise.reject(err);
+        return Promise.reject(error);
       } finally {
         isRefreshing = false;
       }

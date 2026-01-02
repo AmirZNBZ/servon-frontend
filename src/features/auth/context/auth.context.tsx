@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(res.data);
         setStatus("authenticated");
       } catch {
+        tokenStore.clear();
         setUser(null);
         setStatus("unauthenticated");
       }

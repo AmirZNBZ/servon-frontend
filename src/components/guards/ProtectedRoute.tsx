@@ -18,8 +18,11 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     }
   }, [isLoading, user, router]);
 
-  if (isLoading || !user) {
+  if (isLoading) {
     return <div>Checking Authentication...</div>;
+  }
+  if (!user) {
+    return null;
   }
 
   return <>{children}</>;
