@@ -7,13 +7,15 @@ import { redirect } from "next/navigation";
 type LoginContentProps = {};
 
 const LoginContent = ({}: LoginContentProps) => {
-  const { login, register } = useAuth();
+  const { login, register, user } = useAuth();
 
   const handleAdminLogin = async () => {
     await login("admin@example.com", "asdfasdf");
 
     redirect("/dashboard/services");
   };
+
+  if (user) redirect("/");
 
   return (
     <div className="flex gap-4">

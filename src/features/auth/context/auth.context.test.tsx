@@ -40,7 +40,7 @@ describe("AuthContext", () => {
 
   it("bootstraps user on mount", async () => {
     (authApi.me as any).mockResolvedValue({
-      data: { userId: "test@test.com" },
+      data: { id: "test@test.com" },
     });
 
     render(
@@ -60,7 +60,7 @@ describe("AuthContext", () => {
     });
 
     (authApi.me as any).mockResolvedValue({
-      data: { userId: "amir@amir.com" },
+      data: { id: "amir@amir.com" },
     });
 
     const { result } = renderHook(() => useAuth(), {
@@ -72,7 +72,7 @@ describe("AuthContext", () => {
     });
 
     expect(result.current.isAuthenticated).toBe(true);
-    expect(result.current.user?.userId).toBe("amir@amir.com");
+    expect(result.current.user?.id).toBe("amir@amir.com");
   });
 
   it("logs out user correctly", async () => {
